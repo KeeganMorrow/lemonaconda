@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+
+POWERLINE_ARROW_FORMAT = '%{{F#{bgcolor}}}%{{R}}{0}%{{R}}%{{F#{fgcolor}}}'
+
 class Panel:
-    def __init__(self, bgcolor):
+    def __init__(self, bgcolor, fgcolor):
         self._segments = []
         self._bgcolor = bgcolor
+        self._fgcolor = fgcolor
 
     def add_segment(self, segment):
         self._segments.append(segment)
@@ -25,7 +29,7 @@ class Panel:
         # This should be an error
 
     def render(self):
-        string = ''
+        string = '%{{F#{0}}}'.format(self._fgcolor)
         for index, seg in enumerate(self._segments):
             string += '%{{B#{0}}}'.format(seg.color)
             if seg.leftarrow:
@@ -33,14 +37,20 @@ class Panel:
                     color = self._segments[index-1].color
                 else:
                     color = self._bgcolor
-                string += '%{{R}}%{{B#{0}}}%{{B-}}%{{R}}'.format(color)
+                string += POWERLINE_ARROW_FORMAT.format('',
+                                                        fgcolor=self._fgcolor,
+                                                        bgcolor=color,
+                                                        )
             string += seg.text
             if seg.rightarrow:
                 if index < len(self._segments) - 1:
                     color = self._segments[index+1].color
                 else:
                     color = self._bgcolor
-                string += '%{{R}}%{{B#{0}}}%{{B-}}%{{R}}'.format(color)
+                string += POWERLINE_ARROW_FORMAT.format('',
+                                                        fgcolor=self._fgcolor,
+                                                        bgcolor=color,
+                                                        )
             string += '%{B-}'
         print(string)
 
@@ -53,8 +63,8 @@ class Segment:
         self.leftarrow = leftarrow
         self.rightarrow = rightarrow
 
-panel = Panel('181818')
-panel.add_segment(Segment('left', 'afff00', 'test segment 1', leftarrow=True))
+panel = Panel('181818', '181818')
+panel.add_segment(Segment('left', 'afff00', 'test segment 1', rightarrow=True))
 panel.add_segment(Segment('left', '00afff', 'test segment 2', rightarrow=True))
 panel.render()
 
