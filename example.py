@@ -4,6 +4,8 @@ import statusbar.modules.render.powerlinish
 
 render = statusbar.modules.render.powerlinish.PowerlineRenderer()
 panel = statusbar.Panel('181818', '181818', render)
-panel.add_segment(statusbar.Segment('left', 'afff00', 'test segment 1', rightarrow=True))
-panel.add_segment(statusbar.Segment('left', '00afff', 'test segment 2', rightarrow=True))
+
+panel.add_segment(statusbar.ClockIndicator(properties={'bgcolor':'afff00', 'pl_left':True, 'pl_right': False, 'alignment':'right'}))
+
+# panel.add_segment(statusbar.Segment(properties={'bgcolor':'afff00', 'pl_left':True, 'pl_right': True}))
 panel.render()

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import time
+
 class Panel:
     def __init__(self, bgcolor, fgcolor, renderer):
         self._segments = []
@@ -31,14 +33,23 @@ class Panel:
         print(self._renderer.render(self))
 
 class Segment:
-    def __init__(self, alignment, color, text, leftarrow=False, rightarrow=False):
+    def __init__(self, properties):
         self.panel = None
-        self.alignment = alignment
-        self.color = color
-        self.text = text
-        self.leftarrow = leftarrow
-        self.rightarrow = rightarrow
+        self.properties = properties
+
+    def execute(self):
+        raise NotImplementedError("Method is abstract")
+
+    def get_output(self):
+        raise NotImplementedError("Method is abstract")
+
+class ClockIndicator(Segment):
+    def execute(self):
+        return
+    def get_output(self):
+        return time.strftime("%a, %d %b %Y %H:%M:%S ", time.localtime())
 
 class Renderer:
     def render(self, panel):
         raise NotImplementedError("Method is abstract")
+
