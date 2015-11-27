@@ -39,9 +39,13 @@ class Panel:
         sys.stdout.flush()
 
     def execute(self):
+        t = time.time()
         while True:
+            t += self._interval
             self.render()
-            time.sleep(self._interval)
+            # Having the max() in here may only be neccessary
+            # for windows
+            time.sleep(max(0,t-time.time()))
 
 class Segment:
     def __init__(self, properties):
