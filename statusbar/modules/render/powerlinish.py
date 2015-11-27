@@ -38,5 +38,5 @@ class PowerlineRenderer:
                                                         bgcolor=color,
                                                         )
             string += '%{B-}'
-        print(string)
+        return string
 

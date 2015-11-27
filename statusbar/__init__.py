@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import time
+import sys
 
 class Panel:
-    def __init__(self, bgcolor, fgcolor, renderer):
+    def __init__(self, bgcolor, fgcolor, renderer, interval):
         self._segments = []
         self._renderer = renderer
         self._bgcolor = bgcolor
         self._fgcolor = fgcolor
+        self._interval = interval
 
     def add_segment(self, segment):
         self._segments.append(segment)
@@ -30,7 +32,14 @@ class Panel:
         # This should be an error
 
     def render(self):
-        print(self._renderer.render(self))
+        result = self._renderer.render(self)
+        print(result)
+        sys.stdout.flush()
+
+    def execute(self):
+        while True:
+            self.render()
+            time.sleep(self._interval)
 
 class Segment:
     def __init__(self, properties):
