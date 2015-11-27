@@ -3,7 +3,7 @@ import statusbar
 import statusbar.modules.render.powerlinish
 
 render = statusbar.modules.render.powerlinish.PowerlineRenderer()
-panel = statusbar.Panel('181818', '181818', render, 0.5)
+panel = statusbar.Panel('181818', '181818', render, 0.25)
 
 panel.add_segment(statusbar.ClockIndicator(properties={'bgcolor':'afff00', 'pl_left':True, 'pl_right': False, 'alignment':'right'}))
 panel.add_segment(statusbar.BspwmDesktops(properties={'bgcolor':'00afff', 'pl_left':False, 'pl_right': True, 'alignment':'left', 'fgcolor_active': 'ffffff', 'fgcolor_inactive': '181818'}))
