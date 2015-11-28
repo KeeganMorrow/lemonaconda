@@ -4,6 +4,7 @@ import time
 import sys
 import re
 import subprocess
+import signal
 
 class Panel:
     def __init__(self, bgcolor, fgcolor, renderer, interval):
@@ -32,6 +33,7 @@ class Panel:
 
     def execute(self):
         t = time.time()
+        signal.signal(signal.SIGUSR1, self.render_signal)
         for seg in self._segments:
             seg.execute()
         while True:
@@ -40,6 +42,9 @@ class Panel:
             # Having the max() in here may only be neccessary
             # for windows
             time.sleep(max(0,t-time.time()))
+
+    def render_signal(self, sig, frame):
+        self.render()
 
 class Segment:
     def __init__(self, properties):
