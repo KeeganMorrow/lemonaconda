@@ -2,12 +2,14 @@ import statusbar
 import re
 import subprocess
 import multiprocessing
+import os
+import signal
 
 class BspwmDesktops(statusbar.Segment):
     def __init__(self, properties):
         super().__init__(properties)
         self.pipe, listener_pipe = multiprocessing.Pipe()
-        self.process = multiprocessing.Process(target=spawn_listener, args=(listener_pipe,))
+        self.process = multiprocessing.Process(target=spawn_listener, args=(listener_pipe, os.getpid(),))
         self.cached_out = 'No valid data'
 
     def execute(self):
@@ -20,8 +22,9 @@ class BspwmDesktops(statusbar.Segment):
         return self.cached_out.format(**self.properties)
 
 class BspcListener(statusbar.Segment):
-    def __init__(self, pipe):
+    def __init__(self, pipe, parentpid):
         self.pipe = pipe
+        self.parentpid = parentpid
         self.bspc = subprocess.Popen(['bspc', 'control', '--subscribe', 'report'], stdout = subprocess.PIPE)
 
     def execute(self):
@@ -39,8 +42,10 @@ class BspcListener(statusbar.Segment):
                     result += ' %{{F#{fgcolor_inactive}}}' + '{0} '.format(num)
             result += ''
             self.pipe.send(result)
+            # Send SIGUSR1 to redraw the bar
+            os.kill(self.parentpid, signal.SIGUSR1)
 
-def spawn_listener(pipe):
-    listener = BspcListener(pipe)
+def spawn_listener(pipe, parentpid):
+    listener = BspcListener(pipe, parentpid)
     listener.execute()
 

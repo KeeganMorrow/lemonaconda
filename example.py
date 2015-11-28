@@ -4,7 +4,7 @@ import statusbar.modules.render.powerlinish
 import statusbar.modules.bspwm
 
 render = statusbar.modules.render.powerlinish.PowerlineRenderer()
-panel = statusbar.Panel('181818', '181818', render, 0.25)
+panel = statusbar.Panel('181818', '181818', render, 1)
 
 panel.add_segment(statusbar.ClockIndicator(
     properties={'bgcolor':'afff00',
