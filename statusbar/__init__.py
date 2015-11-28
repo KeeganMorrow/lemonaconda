@@ -32,6 +32,8 @@ class Panel:
 
     def execute(self):
         t = time.time()
+        for seg in self._segments:
+            seg.execute()
         while True:
             t += self._interval
             self.render()
