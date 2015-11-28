@@ -25,14 +25,6 @@ class Panel:
             lastseg = seg
         # This should be an error
 
-    def get_next_segment(self, segment):
-        lastseg = None
-        for seg in segments:
-            if seg is segment:
-                return lastseg
-            lastseg = seg
-        # This should be an error
-
     def render(self):
         result = self._renderer.render(self)
         print(result)
