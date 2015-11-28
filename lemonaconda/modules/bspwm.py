@@ -1,11 +1,11 @@
-import statusbar
+import lemonaconda
 import re
 import subprocess
 import multiprocessing
 import os
 import signal
 
-class BspwmDesktops(statusbar.Segment):
+class BspwmDesktops(lemonaconda.Segment):
     def __init__(self, properties):
         super().__init__(properties)
         self.pipe, listener_pipe = multiprocessing.Pipe()
@@ -21,7 +21,7 @@ class BspwmDesktops(statusbar.Segment):
             self.cached_out = self.pipe.recv()
         return self.cached_out.format(**self.properties)
 
-class BspcListener(statusbar.Segment):
+class BspcListener(lemonaconda.Segment):
     def __init__(self, pipe, parentpid):
         self.pipe = pipe
         self.parentpid = parentpid

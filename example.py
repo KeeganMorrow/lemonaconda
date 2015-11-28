@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
-import statusbar
-import statusbar.modules.render.powerlinish
-import statusbar.modules.bspwm
+import lemonaconda
+import lemonaconda.modules.render.powerlinish
+import lemonaconda.modules.bspwm
 
-render = statusbar.modules.render.powerlinish.PowerlineRenderer()
-panel = statusbar.Panel('181818', '181818', render, 1)
+render = lemonaconda.modules.render.powerlinish.PowerlineRenderer()
+panel = lemonaconda.Panel('181818', '181818', render, 1)
 
-panel.add_segment(statusbar.ClockIndicator(
+panel.add_segment(lemonaconda.ClockIndicator(
     properties={'bgcolor':'afff00',
                 'pl_left':True, 'pl_right': False,
                 'alignment':'right',
                 }
 ))
 
-panel.add_segment(statusbar.modules.bspwm.BspwmDesktops(
+panel.add_segment(lemonaconda.modules.bspwm.BspwmDesktops(
     properties={'bgcolor':'00afff',
                 'pl_left':False, 'pl_right': True,
                 'alignment':'left',
@@ -23,7 +23,7 @@ panel.add_segment(statusbar.modules.bspwm.BspwmDesktops(
                 }
 ))
 
-# panel.add_segment(statusbar.Segment(
+# panel.add_segment(lemonaconda.Segment(
 #     properties={'bgcolor':'afff00',
 #                 'pl_left':True, 'pl_right': True,
 #                 }
