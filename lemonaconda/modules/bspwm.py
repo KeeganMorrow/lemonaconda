@@ -1,15 +1,15 @@
 import lemonaconda
 import re
 import subprocess
-import multiprocessing
+import threading
 import os
 import signal
 
 class BspwmDesktops(lemonaconda.Segment):
     def __init__(self, properties):
         super().__init__(properties)
-        self.pipe, listener_pipe = multiprocessing.Pipe()
-        self.process = multiprocessing.Process(target=spawn_listener, args=(listener_pipe, os.getpid(),))
+        self.listener = BspcListener(os.getpid())
+        self.process = threading.Thread(target=self.listener.execute,)
         self.cached_out = 'No valid data'
 
     def execute(self):
@@ -17,13 +17,10 @@ class BspwmDesktops(lemonaconda.Segment):
         self.process.start()
 
     def get_output(self):
-        if self.pipe.poll():
-            self.cached_out = self.pipe.recv()
-        return self.cached_out.format(**self.properties)
+        return self.listener.output.format(**self.properties)
 
 class BspcListener(lemonaconda.Segment):
-    def __init__(self, pipe, parentpid):
-        self.pipe = pipe
+    def __init__(self, parentpid):
         self.parentpid = parentpid
         self.bspc = subprocess.Popen(['bspc', 'control', '--subscribe', 'report'], stdout = subprocess.PIPE)
 
@@ -41,11 +38,13 @@ class BspcListener(lemonaconda.Segment):
                 else:
                     result += ' %{{F#{fgcolor_inactive}}}' + '{0} '.format(num)
             result += ''
-            self.pipe.send(result)
+            # Leave result for the module to grab
+            # (Hopefully) shouldn't need locks, etc if only used in one place
+            self.output = result
             # Send SIGUSR1 to redraw the bar
             os.kill(self.parentpid, signal.SIGUSR1)
 
-def spawn_listener(pipe, parentpid):
-    listener = BspcListener(pipe, parentpid)
+def spawn_listener(parentpid):
+    listener = BspcListener(parentpid)
     listener.execute()
 
