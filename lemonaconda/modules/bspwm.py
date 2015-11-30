@@ -12,7 +12,6 @@ class BspwmDesktops(lemonaconda.Segment):
         self.process = threading.Thread(target=self.listener.execute,)
 
     def execute(self):
-        print("starting listener")
         self.process.start()
 
     def get_output(self):
