@@ -32,16 +32,16 @@ class Panel:
         sys.stdout.flush()
 
     def execute(self):
-        t = time.time()
         signal.signal(signal.SIGUSR1, self.render_signal)
         for seg in self._segments:
             seg.execute()
         while True:
-            t += self._interval
+            t = time.time() + self._interval
             self.render()
             # Having the max() in here may only be neccessary
             # for windows
-            time.sleep(max(0,t-time.time()))
+            sleeptime = max(0,t-time.time())
+            time.sleep(sleeptime)
 
     def render_signal(self, sig, frame):
         self.render()
