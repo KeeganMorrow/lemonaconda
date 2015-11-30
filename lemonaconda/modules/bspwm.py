@@ -10,7 +10,6 @@ class BspwmDesktops(lemonaconda.Segment):
         super().__init__(properties)
         self.listener = BspcListener(os.getpid())
         self.process = threading.Thread(target=self.listener.execute,)
-        self.cached_out = 'No valid data'
 
     def execute(self):
         print("starting listener")
@@ -23,6 +22,7 @@ class BspcListener(lemonaconda.Segment):
     def __init__(self, parentpid):
         self.parentpid = parentpid
         self.bspc = subprocess.Popen(['bspc', 'control', '--subscribe', 'report'], stdout = subprocess.PIPE)
+        self.output = 'No valid data'
 
     def execute(self):
         pattern = re.compile(r':([O,o,F,f,U,u])(\d)')
