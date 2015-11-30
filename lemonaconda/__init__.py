@@ -28,7 +28,8 @@ class Panel:
 
     def render(self):
         result = self._renderer.render(self)
-        print(result)
+        sys.stdout.write('%{S0}' + result)
+        sys.stdout.write('%{S1}' + result + '\n')
         sys.stdout.flush()
 
     def execute(self):
