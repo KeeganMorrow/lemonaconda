@@ -13,6 +13,7 @@ class Panel:
         self._bgcolor = bgcolor
         self._fgcolor = fgcolor
         self._interval = interval
+        self._rendering = False
 
     def add_segment(self, segment):
         self._segments.append(segment)
@@ -27,10 +28,13 @@ class Panel:
         # This should be an error
 
     def render(self):
-        result = self._renderer.render(self)
-        sys.stdout.write('%{S0}' + result)
-        sys.stdout.write('%{S1}' + result + '\n')
-        sys.stdout.flush()
+        if not self._rendering:
+            self._rendering = True
+            result = self._renderer.render(self)
+            sys.stdout.write('%{S0}' + result)
+            sys.stdout.write('%{S1}' + result + '\n')
+            sys.stdout.flush()
+            self._rendering = False
 
     def execute(self):
         signal.signal(signal.SIGUSR1, self.render_signal)
