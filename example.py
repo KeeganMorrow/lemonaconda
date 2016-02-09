@@ -3,6 +3,7 @@ import lemonaconda
 import lemonaconda.modules.render.powerlinish
 import lemonaconda.modules.bspwm
 import lemonaconda.modules.alsa
+import lemonaconda.modules.weather_owm
 
 render = lemonaconda.modules.render.powerlinish.PowerlineRenderer()
 panel = lemonaconda.Panel('181818', '181818', render, 1)
@@ -30,6 +31,14 @@ panel.add_segment(lemonaconda.modules.bspwm.BspwmDesktops(
                 'fgcolor_urgent': 'ff0000',
                 }
 ), 'left')
+
+# panel.add_segment(lemonaconda.modules.weather_owm.WeatherOwm(
+#     location='98203',
+#     properties={'bgcolor':'00afff',
+#                 'pl_left':False, 'pl_right': True,
+#                 'alignment':'left',
+#                 }
+# ), 'left')
 
 # panel.add_segment(lemonaconda.Segment(
 #     properties={'bgcolor':'afff00',
