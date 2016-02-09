@@ -12,14 +12,14 @@ panel.add_segment(lemonaconda.ClockIndicator(
                 'pl_left':True, 'pl_right': False,
                 'alignment':'right',
                 }
-))
+), 'right')
 
 panel.add_segment(lemonaconda.modules.alsa.AlsaVolume(
     properties={'bgcolor':'00afff',
                 'pl_left':True, 'pl_right': False,
                 'alignment':'right',
                 }
-))
+), 'right')
 
 panel.add_segment(lemonaconda.modules.bspwm.BspwmDesktops(
     properties={'bgcolor':'00afff',
@@ -29,7 +29,7 @@ panel.add_segment(lemonaconda.modules.bspwm.BspwmDesktops(
                 'fgcolor_inactive': '181818',
                 'fgcolor_urgent': 'ff0000',
                 }
-))
+), 'left')
 
 # panel.add_segment(lemonaconda.Segment(
 #     properties={'bgcolor':'afff00',

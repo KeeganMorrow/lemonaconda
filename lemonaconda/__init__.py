@@ -8,15 +8,24 @@ import signal
 
 class Panel:
     def __init__(self, bgcolor, fgcolor, renderer, interval):
-        self._segments = []
+        self._segments_left = []
+        self._segments_right = []
+        self._segments_center = []
         self._renderer = renderer
         self._bgcolor = bgcolor
         self._fgcolor = fgcolor
         self._interval = interval
         self._rendering = False
 
-    def add_segment(self, segment):
-        self._segments.append(segment)
+    def add_segment(self, segment, alignment):
+        if alignment == 'left':
+            self._segments_left.append(segment)
+        elif alignment == 'right':
+            self._segments_right.append(segment)
+        elif alignment == 'center':
+            self._segments_center.append(segment)
+        else:
+            raise(ValueError('Invalid alignment {0}'.format(alignment)))
         segment.panel=self
 
     def get_next_segment(self, segment):
@@ -38,7 +47,11 @@ class Panel:
 
     def execute(self):
         signal.signal(signal.SIGUSR1, self.render_signal)
-        for seg in self._segments:
+        segments = []
+        segments.extend(self._segments_right)
+        segments.extend(self._segments_center)
+        segments.extend(self._segments_left)
+        for seg in segments:
             seg.execute()
         while True:
             t = time.time() + self._interval
