@@ -22,7 +22,6 @@ class WeatherOwm(lemonaconda.Segment):
 class WeatherOwmListener(lemonaconda.Segment):
     def __init__(self, location, interval, format_str):
         self.output = 'No valid data'
-        print(location)
         self.location = location
         self.interval = interval
         self.format_str = format_str
@@ -43,8 +42,9 @@ class WeatherOwmListener(lemonaconda.Segment):
                 icon='☀'
             else:
                 icon='?'
+            temp_f = w.get_temperature(unit='fahrenheit')['temp']
             result = self.format_str.format(**{
-                'icon':icon, 'temp_f':w.get_temperature(unit='fahrenheit')['temp']})
+                'icon':icon, 'temp_f':temp_f})
             # Leave result for the module to grab
             # (Hopefully) shouldn't need locks, etc if only used in one place
             self.output = result
