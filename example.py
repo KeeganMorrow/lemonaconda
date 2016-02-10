@@ -4,6 +4,7 @@ import lemonaconda.modules.render.powerlinish
 import lemonaconda.modules.bspwm
 import lemonaconda.modules.alsa
 import lemonaconda.modules.weather_owm
+import lemonaconda.modules.weather_yahoo
 
 render = lemonaconda.modules.render.powerlinish.PowerlineRenderer()
 panel = lemonaconda.Panel('181818', '181818', render, 1)
@@ -29,6 +30,14 @@ panel.add_segment(lemonaconda.ClockIndicator(
     properties={'bgcolor':'afff00',
                 'pl_left':True, 'pl_right': False,
                 'alignment':'right',
+                }
+), 'right')
+
+panel.add_segment(lemonaconda.modules.weather_yahoo.WeatherYahoo(
+    woeid='2400849',
+    properties={'bgcolor':'00afff',
+                'pl_left':True, 'pl_right': False,
+                'alignment':'left',
                 }
 ), 'right')
 

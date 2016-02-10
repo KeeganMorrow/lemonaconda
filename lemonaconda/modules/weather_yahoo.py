@@ -5,12 +5,19 @@ import threading
 import os
 import signal
 import time
-import pyowm
+import urllib
+import urllib.request
+import urllib.parse
+import json
 
-class WeatherOwm(lemonaconda.Segment):
-    def __init__(self, properties, location, interval=120, format_str='{icon} {temp_f}'):
+YAHOO_BASE_WEATHER_URL = "https://query.yahooapis.com/v1/public/yql?"
+# TODO('Make this configurable?')
+YAHOO_QUERY_YQL = "select item.condition from weather.forecast where woeid = {woeid}"
+
+class WeatherYahoo(lemonaconda.Segment):
+    def __init__(self, properties, woeid, interval=120, format_str='{text} {temp_f}°'):
         super().__init__(properties)
-        self.listener = WeatherOwmListener(location, interval, format_str)
+        self.listener = WeatherYahooListener(woeid, interval, format_str)
         self.process = threading.Thread(target=self.listener.execute,)
 
     def execute(self):
@@ -19,32 +26,32 @@ class WeatherOwm(lemonaconda.Segment):
     def get_output(self):
         return self.listener.output
 
-class WeatherOwmListener(lemonaconda.Segment):
-    def __init__(self, location, interval, format_str):
+class WeatherYahooListener(lemonaconda.Segment):
+    def __init__(self, woeid, interval, format_str):
         self.output = 'No valid data'
-        self.location = location
+        self.woeid = woeid
         self.interval = interval
         self.format_str = format_str
 
     def execute(self):
-        owm = pyowm.OWM('f57525067de8e3639d3fa13c5158d09b')
-        observation = owm.weather_at_place(self.location)
         while True:
-            w = observation.get_weather()
-            w.get_wind()
-            w.get_humidity()
-            status = w.get_status()
-            if status == 'clouds':
+            query = YAHOO_QUERY_YQL.format(woeid=self.woeid)
+            yql_url = YAHOO_BASE_WEATHER_URL + urllib.parse.urlencode({'q':query}) + "&format=json"
+            result = urllib.request.urlopen(yql_url).read().decode('utf-8')
+            data = json.loads(result)
+            condition = data['query']['results']['channel']['item']['condition']
+            text = condition['text']
+            if text == 'clouds':
                 icon='c'
-            elif status == 'clear':
+            elif text == 'clear':
                 icon='f'
-            elif status == 'snow':
+            elif text == 'snow':
                 icon='☀'
             else:
                 icon='?'
-            temp_f = w.get_temperature(unit='fahrenheit')['temp']
+            temp_f = condition['temp']
             result = self.format_str.format(**{
-                'icon':icon, 'temp_f':temp_f})
+                'icon':icon, 'temp_f':temp_f, 'text':text,})
             # Leave result for the module to grab
             # (Hopefully) shouldn't need locks, etc if only used in one place
             self.output = result
