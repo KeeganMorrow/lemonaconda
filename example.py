@@ -8,13 +8,6 @@ import lemonaconda.modules.weather_owm
 render = lemonaconda.modules.render.powerlinish.PowerlineRenderer()
 panel = lemonaconda.Panel('181818', '181818', render, 1)
 
-panel.add_segment(lemonaconda.ClockIndicator(
-    properties={'bgcolor':'afff00',
-                'pl_left':True, 'pl_right': False,
-                'alignment':'right',
-                }
-), 'right')
-
 panel.add_segment(lemonaconda.modules.alsa.AlsaVolume(
     properties={'bgcolor':'00afff',
                 'pl_left':True, 'pl_right': False,
@@ -32,13 +25,20 @@ panel.add_segment(lemonaconda.modules.bspwm.BspwmDesktops(
                 }
 ), 'left')
 
+panel.add_segment(lemonaconda.ClockIndicator(
+    properties={'bgcolor':'afff00',
+                'pl_left':True, 'pl_right': False,
+                'alignment':'right',
+                }
+), 'right')
+
 # panel.add_segment(lemonaconda.modules.weather_owm.WeatherOwm(
 #     location='98203',
 #     properties={'bgcolor':'00afff',
-#                 'pl_left':False, 'pl_right': True,
+#                 'pl_left':True, 'pl_right': False,
 #                 'alignment':'left',
 #                 }
-# ), 'left')
+# ), 'right')
 
 # panel.add_segment(lemonaconda.Segment(
 #     properties={'bgcolor':'afff00',
