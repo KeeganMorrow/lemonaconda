@@ -28,7 +28,7 @@ class WeatherOwmListener(lemonaconda.Segment):
         self.format_str = format_str
 
     def execute(self):
-        owm = pyowm.OWM()
+        owm = pyowm.OWM('f57525067de8e3639d3fa13c5158d09b')
         observation = owm.weather_at_place(self.location)
         while True:
             w = observation.get_weather()
