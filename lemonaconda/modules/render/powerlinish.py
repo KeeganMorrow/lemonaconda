@@ -36,6 +36,6 @@ class PowerlineRenderer:
                                                         fgcolor=panel._fgcolor,
                                                         bgcolor=color,
                                                         )
-            string += '%{B-}'
+            string += '%{B-}%{R}'
         return string
 
