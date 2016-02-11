@@ -9,12 +9,13 @@ import lemonaconda.modules.weather_yahoo
 render = lemonaconda.modules.render.powerlinish.PowerlineRenderer()
 panel = lemonaconda.Panel('181818', '181818', render, 1)
 
-# panel.add_segment(lemonaconda.modules.alsa.AlsaVolume(
-#     properties={'bgcolor':'00afff',
-#                 'pl_left':True, 'pl_right': False,
-#                 'alignment':'right',
-#                 }
-# ), 'right')
+panel.add_segment(lemonaconda.modules.alsa.AlsaVolume(
+    properties={'bgcolor':'afff00',
+                'pl_left':False, 'pl_right': True,
+                'alignment':'right',
+                },
+    interval = 2,
+), 'left')
 
 panel.add_segment(lemonaconda.modules.bspwm.BspwmDesktops(
     properties={'bgcolor':'00afff',
