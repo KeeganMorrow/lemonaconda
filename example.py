@@ -15,6 +15,7 @@ panel.add_segment(lemonaconda.modules.alsa.AlsaVolume(
                 'alignment':'right',
                 },
     interval = 2,
+    format_str = '\u2009♫\u2009{vol_percent}',
 ), 'left')
 
 panel.add_segment(lemonaconda.modules.bspwm.BspwmDesktops(
@@ -39,7 +40,8 @@ panel.add_segment(lemonaconda.modules.weather_yahoo.WeatherYahoo(
     properties={'bgcolor':'00afff',
                 'pl_left':True, 'pl_right': False,
                 'alignment':'left',
-                }
+                },
+    format_str = '{icon} {temp_f}°F',
 ), 'right')
 
 # panel.add_segment(lemonaconda.modules.weather_owm.WeatherOwm(
