@@ -15,7 +15,7 @@ panel.add_segment(lemonaconda.modules.alsa.AlsaVolume(
                 'alignment':'right',
                 },
     interval = 2,
-    format_str = '\u2009♫\u2009{vol_percent}',
+    format_str = '\u2009{icon}\u2009{vol_percent}',
 ), 'left')
 
 panel.add_segment(lemonaconda.modules.bspwm.BspwmDesktops(
