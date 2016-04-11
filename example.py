@@ -3,7 +3,6 @@ import lemonaconda
 import lemonaconda.modules.render.powerlinish
 import lemonaconda.modules.bspwm
 import lemonaconda.modules.alsa
-import lemonaconda.modules.weather_owm
 import lemonaconda.modules.weather_yahoo
 
 render = lemonaconda.modules.render.powerlinish.PowerlineRenderer()
@@ -43,14 +42,6 @@ panel.add_segment(lemonaconda.modules.weather_yahoo.WeatherYahoo(
                 },
     format_str = '{icon} {temp_f}°F',
 ), 'right')
-
-# panel.add_segment(lemonaconda.modules.weather_owm.WeatherOwm(
-#     location='98203',
-#     properties={'bgcolor':'00afff',
-#                 'pl_left':True, 'pl_right': False,
-#                 'alignment':'left',
-#                 }
-# ), 'right')
 
 # panel.add_segment(lemonaconda.Segment(
 #     properties={'bgcolor':'afff00',
