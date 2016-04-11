@@ -8,7 +8,6 @@ import signal
 import time
 import re
 import select
-import alsaaudio
 
 VOLUME_REGEX = re.compile(b'\[(\d+)%\]\s*\[([a-z]+)\]')
 
