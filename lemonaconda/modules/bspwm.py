@@ -20,7 +20,7 @@ class BspwmDesktops(lemonaconda.Segment):
 class BspcListener(lemonaconda.Segment):
     def __init__(self, parentpid):
         self.parentpid = parentpid
-        self.bspc = subprocess.Popen(['bspc', 'control', '--subscribe', 'report'], stdout = subprocess.PIPE)
+        self.bspc = subprocess.Popen(['bspc', 'subscribe', 'report'], stdout = subprocess.PIPE)
         self.output = 'No valid data'
 
     def execute(self):
