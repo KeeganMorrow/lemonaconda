@@ -1,3 +1,4 @@
+# coding=utf-8
 import lemonaconda
 import re
 import subprocess
