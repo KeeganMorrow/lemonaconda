@@ -13,6 +13,8 @@ panel.add_segment(lemonaconda.modules.alsa.AlsaVolume(
                 'pl_left':False, 'pl_right': True,
                 'alignment':'right',
                 },
+    device='pulse',
+    scontrol='Master',
     interval = 2,
     format_str = '\u2009{icon}\u2009{vol_percent}',
 ), 'left')

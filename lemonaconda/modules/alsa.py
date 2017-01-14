@@ -21,13 +21,21 @@ default_volume_icons = [
 
 class AlsaVolume(lemonaconda.Segment):
     def __init__(self, properties,
-                 scontrol='Master', interval=5,
-                 format_str='{vol_percent}',
-                 icons = default_volume_icons
-                 ):
+        device=None,
+        scontrol='Master', interval=5,
+        format_str='{vol_percent}',
+        icons = default_volume_icons
+    ):
         super().__init__(properties)
-        self.listener = AlsaListener(os.getpid(), scontrol, interval, format_str, icons)
-        self.process = threading.Thread(target=self.listener.execute,)
+        self.listener = AlsaListener(
+            os.getpid(),
+            device,
+            scontrol,
+            interval,
+            format_str,
+            icons
+        )
+        self.process = threading.Thread(target=self.listener.execute)
 
     def execute(self):
         self.process.start()
@@ -37,9 +45,18 @@ class AlsaVolume(lemonaconda.Segment):
 
 
 class AlsaListener(lemonaconda.Segment):
-    def __init__(self, parentpid, scontrol, interval, format_str, icons):
+    def __init__(
+        self,
+        parentpid,
+        device,
+        scontrol,
+        interval,
+        format_str,
+        icons
+    ):
         self.parentpid = parentpid
         self.output = 'No valid data'
+        self.device = device
         self.scontrol = scontrol
         self.interval = interval
         self.format_str = format_str
@@ -47,8 +64,13 @@ class AlsaListener(lemonaconda.Segment):
 
     def execute(self):
         while True:
-            output = subprocess.check_output(['amixer',
-                                              'get', self.scontrol])
+            command = ['amixer']
+            if self.device:
+                command.append('-D')
+                command.append(self.device)
+            command.append('get')
+            command.append(self.scontrol)
+            output = subprocess.check_output(command)
             matches = VOLUME_REGEX.findall(output)
             vol_percent = int(matches[0][0])
             state = matches[0][1].decode('utf-8')
