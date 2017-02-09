@@ -11,7 +11,10 @@ class WeatherOwm(lemonaconda.Segment):
     def __init__(self, properties, location, interval=120, format_str='{icon} {temp_f}'):
         super().__init__(properties)
         self.listener = WeatherOwmListener(location, interval, format_str)
-        self.process = threading.Thread(target=self.listener.execute,)
+        self.process = threading.Thread(
+                target=self.listener.execute,
+                daemon=True,
+            )
 
     def execute(self):
         self.process.start()

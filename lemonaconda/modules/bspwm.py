@@ -9,7 +9,10 @@ class BspwmDesktops(lemonaconda.Segment):
     def __init__(self, properties):
         super().__init__(properties)
         self.listener = BspcListener(os.getpid())
-        self.process = threading.Thread(target=self.listener.execute,)
+        self.process = threading.Thread(
+                target=self.listener.execute,
+                daemon=True,
+            )
 
     def execute(self):
         self.process.start()

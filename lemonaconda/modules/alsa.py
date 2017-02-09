@@ -35,7 +35,10 @@ class AlsaVolume(lemonaconda.Segment):
             format_str,
             icons
         )
-        self.process = threading.Thread(target=self.listener.execute)
+        self.process = threading.Thread(
+                target=self.listener.execute,
+                daemon=True,
+            )
 
     def execute(self):
         self.process.start()

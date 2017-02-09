@@ -60,8 +60,10 @@ class WeatherYahoo(lemonaconda.Segment):
         self.listener = WeatherYahooListener(woeid, interval,
                                              format_str, code_lookup
                                              )
-        self.process = threading.Thread(target=self.listener.execute,)
-
+        self.process = threading.Thread(
+                target=self.listener.execute,
+                daemon=True,
+            )
     def execute(self):
         self.process.start()
 
